@@ -1,0 +1,97 @@
+erDiagram
+    %% ===== ENTIDADES PRINCIPAIS =====
+    USUARIO {
+        int idUsuario PK
+        string tipoUsuario
+        string nomeCompleto
+        string email
+        string senhaHash
+        double pontuacao
+        string endereco
+    }
+
+    PESSOAFISICA {
+        int idUsuario PK, FK
+        date dataNascimento
+        string cpf
+    }
+
+    PESSOAJURIDICA {
+        int idUsuario PK, FK
+        date dataCriacao
+        string cnpj
+    }
+
+    ONG {
+        int idUsuario PK, FK
+        date dataCriacao
+        string cnpj
+    }
+
+    ESPECIE {
+        int idEspecie PK
+        string tipoPlanta
+        string nomeCientifico
+        string nomePopular
+        string biomaOrigem
+        boolean especieFrutifera
+        string fasesCrescimento
+    }
+
+    PLANTIO {
+        int idPlantio PK
+        int idUsuario FK
+        date dataPlantio
+        string localizacao
+        string status
+    }
+
+    DETALHEPLANTIO {
+        int idPlantio PK, FK
+        int idEspecie PK, FK
+        int quantidadeMudas
+    }
+
+    CONTEUDO {
+        int idConteudo PK
+        int idUsuario FK
+        string titulo
+        string corpoTexto
+        string tipoConteudo
+        datetime dataPublicacao
+    }
+
+    PONTORETIRADA {
+        int idPontoRetirada PK
+        int idUsuario FK
+        string nomeLocal
+        string localizacao
+        string horarioFuncionamento
+    }
+
+    ESTOQUEMUDAS {
+        int idPontoRetirada PK, FK
+        int idEspecie PK, FK
+        int estoque
+        datetime atualizacao
+    }
+
+    %% ===== RELACIONAMENTOS =====
+
+    %% Usuário pode ter vários plantios e conteúdos
+    USUARIO ||--o{ PLANTIO : "realiza"
+    USUARIO ||--o{ CONTEUDO : "publica"
+    USUARIO ||--o{ PONTORETIRADA : "administra"
+
+    %% Especializações de Usuário
+    USUARIO ||--|| PESSOAFISICA : "é um"
+    USUARIO ||--|| PESSOAJURIDICA : "é um"
+    USUARIO ||--|| ONG : "é um"
+
+    %% Plantio com Detalhes e Espécies
+    PLANTIO ||--|{ DETALHEPLANTIO : "possui"
+    ESPECIE ||--|{ DETALHEPLANTIO : "referenciada em"
+
+    %% Ponto de Retirada com Estoque
+    PONTORETIRADA ||--|{ ESTOQUEMUDAS : "contém"
+    ESPECIE ||--|{ ESTOQUEMUDAS : "armazenada em"
