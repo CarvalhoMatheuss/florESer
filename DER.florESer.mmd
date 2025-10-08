@@ -77,21 +77,27 @@ erDiagram
     }
 
     %% ===== RELACIONAMENTOS =====
-
-    %% Usuário pode ter vários plantios e conteúdos
-    USUARIO ||--o{ PLANTIO : "realiza"
-    USUARIO ||--o{ CONTEUDO : "publica"
-    USUARIO ||--o{ PONTORETIRADA : "administra"
-
-    %% Especializações de Usuário
+%% Especializações de Usuário
     USUARIO ||--|| PESSOAFISICA : "é um"
-    USUARIO ||--|| PESSOAJURIDICA : "é um"
     USUARIO ||--|| ONG : "é um"
+    USUARIO ||--|| PESSOAJURIDICA : "é um"
+    
 
+    
+ %% PessoaJuridca e ONG podem ter várias publicações e pontos de retirada
+    PESSOAJURIDICA ||--o{ CONTEUDO : "publica"
+    PESSOAJURIDICA ||--o{ PONTORETIRADA : "administra"
+    ONG ||--o{ CONTEUDO : "publica"
+    ONG ||--o{ PONTORETIRADA : "administra"
+    
+ %% PessoaFisica pode ter vários plantios
+    PESSOAFISICA ||--o{ PLANTIO : "realiza"
+    
     %% Plantio com Detalhes e Espécies
     PLANTIO ||--|{ DETALHEPLANTIO : "possui"
     ESPECIE ||--|{ DETALHEPLANTIO : "referenciada em"
 
     %% Ponto de Retirada com Estoque
-    PONTORETIRADA ||--|{ ESTOQUEMUDAS : "contém"
     ESPECIE ||--|{ ESTOQUEMUDAS : "armazenada em"
+    PONTORETIRADA ||--|{ ESTOQUEMUDAS : "contém"
+    
